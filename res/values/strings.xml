@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Circle TD</string>
+    <string name="cancel">Cancel</string>
+    <string name="basic_tower">Basic Tower</string>
+    <string name="main_base">Main Base</string>
+    <string name="extension_tower">Extension Tower</string>
+    <string name="shooter_tower">Basic Shooter</string>
+    <string name="energy_tower">Energy Tower</string>
+
+</resources>
