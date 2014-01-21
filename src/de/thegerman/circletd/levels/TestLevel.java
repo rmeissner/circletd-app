@@ -16,6 +16,12 @@ public class TestLevel extends Level {
 	}
 	
 	@Override
+	public void initialize() {
+		super.initialize();
+		gameProperties.addGems(200);
+	}
+	
+	@Override
 	public void additionalUpdates(long timespan) {
 		lastCreep += timespan;
 		if (lastCreep > CREEP_DELAY) {

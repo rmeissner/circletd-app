@@ -7,8 +7,12 @@ import java.util.List;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
+import de.thegerman.circletd.GameApplication;
 import de.thegerman.circletd.GameProperties;
-import de.thegerman.circletd.handler.DialogHandler;
+import de.thegerman.circletd.R;
+import de.thegerman.circletd.handler.UserMessageHandler;
+import de.thegerman.circletd.notification.Notification;
 import de.thegerman.circletd.objects.towers.EnergyTower;
 import de.thegerman.circletd.objects.towers.ExtensionTower;
 import de.thegerman.circletd.objects.towers.ProviderTower;
@@ -26,8 +30,8 @@ public class NewTowerDialog extends GameDialog {
 	private Paint paint;
 	private List<NewTowerDialogItem> items = new ArrayList<NewTowerDialogItem>();
 
-	public NewTowerDialog(Tower tempTower, ProviderTower selectedTower, GameProperties gameProperties, DialogHandler dialogHandler) {
-		super(dialogHandler);
+	public NewTowerDialog(Tower tempTower, ProviderTower selectedTower, GameProperties gameProperties, UserMessageHandler userMessageHandler) {
+		super(userMessageHandler);
 		this.tempTower = tempTower;
 		this.selectedTower = selectedTower;
 		this.gameProperties = gameProperties;
@@ -76,10 +80,15 @@ public class NewTowerDialog extends GameDialog {
   		break;
 		}
 		
-		// TODO: add notification
-		if (newTower != null && (gameProperties.getEnergy() + newTower.getEnergyLevel()) >= 0) {
-  		gameProperties.getTowers().add(newTower);
-  		selectedTower.addChild(newTower);
+		if (newTower != null) {
+			if ((gameProperties.getEnergy() + newTower.getEnergyLevel()) < 0) {
+				userMessageHandler.addNotification(new Notification(GameApplication.getAppContext().getString(R.string.no_energy), gameProperties));
+			} else if (!gameProperties.removeGems(newTower.getCosts())) {
+				userMessageHandler.addNotification(new Notification(GameApplication.getAppContext().getString(R.string.no_gems), gameProperties));
+			}	else {
+    		gameProperties.getTowers().add(newTower);
+    		selectedTower.addChild(newTower);
+			}
 		}
 	}
 
@@ -91,6 +100,8 @@ public class NewTowerDialog extends GameDialog {
 	@Override
 	public boolean handleTouchEvent(int action, float currentX, float currentY, GameProperties gameProperties) {
 		if (isDismissed()) return false;
+		if (action != MotionEvent.ACTION_UP) return true;
+
 		for (NewTowerDialogItem item : items) {
 			if (item.contains(currentX, currentY)) {
 				if (item.getTowerType() != null) {

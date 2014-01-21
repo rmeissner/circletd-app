@@ -11,6 +11,8 @@ public abstract class Gem extends CircleObject {
 
 	private int gemColor;
 	protected float angle;
+
+	private boolean alive = true;
 	
 	public Gem(float xPos, float yPos, float radius, int gemColor) {
 		super(xPos, yPos, radius);
@@ -18,11 +20,11 @@ public abstract class Gem extends CircleObject {
 		this.angle = 0;
 	}
 	
-	abstract int getValue();
+	public abstract int getValue();
 	
 	@Override
 	public void draw(Canvas canvas) {
-		Gem.drawGem(canvas, gemColor, angle, getX(), getY(), angle);
+		Gem.drawGem(canvas, gemColor, angle, getX(), getY(), radius);
 	}
 
 	public static void drawGem(Canvas canvas, int gemColor, float angle, float xPos, float yPos, float radius) {
@@ -78,6 +80,14 @@ public abstract class Gem extends CircleObject {
 		gemPath.close();
 		color.setAlpha(255);
 		canvas.drawPath(gemPath, color);
+	}
+
+	public void destroy() {
+		alive  = false;
+	}
+	
+	public boolean isAlive() {
+		return alive;
 	}
 
 }

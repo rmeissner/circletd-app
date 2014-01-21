@@ -1,16 +1,16 @@
 package de.thegerman.circletd.dialogs;
 
 import android.graphics.Canvas;
-import de.thegerman.circletd.handler.DialogHandler;
+import de.thegerman.circletd.handler.UserMessageHandler;
 import de.thegerman.circletd.handler.TouchEventHandler;
 
 public abstract class GameDialog implements TouchEventHandler {
 
 	private boolean dismissed = false;
-	private DialogHandler dialogHandler;
+	protected UserMessageHandler userMessageHandler;
 	
-	public GameDialog(DialogHandler dialogHandler) {
-		this.dialogHandler = dialogHandler;
+	public GameDialog(UserMessageHandler userMessageHandler) {
+		this.userMessageHandler = userMessageHandler;
 	}
 
 	final public boolean isDismissed() {
@@ -18,7 +18,7 @@ public abstract class GameDialog implements TouchEventHandler {
 	}
 	
 	final public void dismiss() {
-		dialogHandler.closeDialog(this);
+		userMessageHandler.closeDialog(this);
 		dismissed = true;
 	}
 	

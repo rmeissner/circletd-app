@@ -24,4 +24,9 @@ public class ExtensionTower extends ProviderTower {
 		return 0;
 	}
 
+	@Override
+	public int getCosts() {
+		return 50;
+	}
+
 }

@@ -25,4 +25,8 @@ public class BasicTower extends Tower {
 		return 0;
 	}
 
+	@Override
+	public int getCosts() {
+		return 0;
+	}
 }

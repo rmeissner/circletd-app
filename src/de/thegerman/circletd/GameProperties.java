@@ -127,4 +127,10 @@ public class GameProperties {
 		}
 		return energy;
 	}
+
+	public boolean removeGems(int costs) {
+		if (gemCount - costs <  0) return false;
+		gemCount -= costs;
+		return true;
+	}
 }

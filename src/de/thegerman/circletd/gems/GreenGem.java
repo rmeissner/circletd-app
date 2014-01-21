@@ -17,7 +17,7 @@ public class GreenGem extends Gem {
 	}
 
 	@Override
-	int getValue() {
+	public int getValue() {
 		return 50;
 	}
 

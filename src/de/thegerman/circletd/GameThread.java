@@ -30,9 +30,7 @@ public class GameThread extends Thread {
 			if (gameProperties.getWidth() > 0 && gameProperties.getHeight() > 0) {
 				Canvas canvas = null;
 				try {
-					if(!gameProperties.isGamePaused()) {
-						updateLevel();
-					}
+					updateLevel();
 					synchronized (this.mSurfaceHolder) {
 						canvas = mSurfaceHolder.lockCanvas();
 						if(canvas == null) continue; 
@@ -55,7 +53,7 @@ public class GameThread extends Thread {
 	}
 
 	private void updateLevel() {
-		long timespan = Math.min(System.currentTimeMillis() - lastRunTime, GameView.MAX_TIMESPAN);
+		long timespan = Math.min(System.currentTimeMillis() - lastRunTime, GameView.MAX_TIMESPAN);		
 		level.update(timespan);
 		lastRunTime = System.currentTimeMillis();
 	}

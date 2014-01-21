@@ -7,7 +7,7 @@ public interface AnimatedObject extends GraphicalObject {
 	
 	/**
 	 * @param timespan the time span for which the object should be updated
-	 * @param gameProperties TODO
+	 * @param gameProperties can be manipulated on update
 	 * @return indicates whether the object should be removed
 	 */
 	public boolean update(long timespan, GameProperties gameProperties);

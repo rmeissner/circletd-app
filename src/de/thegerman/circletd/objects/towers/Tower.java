@@ -36,16 +36,17 @@ public abstract class Tower extends CircleObject {
 	public abstract boolean update(long timespan, GameProperties gameProperties);
 	public abstract TowerType getType();
 	public abstract int getEnergyLevel();
+	public abstract int getCosts();
 
 	public boolean isAlive() {
 		return alive;
 	}
 	
 	public void destroy() {
-		alive = false;
-		if (providerTower != null) {
+		if (alive && providerTower != null) {
 			providerTower.removeChild(this);
 		}
+		alive = false;
 	}
 
 	public boolean hitAction(Creep creep, GameProperties gameProperties) {

@@ -1,7 +1,10 @@
 package de.thegerman.circletd.levels;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.graphics.Canvas;
@@ -10,9 +13,13 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import de.thegerman.circletd.GameProperties;
 import de.thegerman.circletd.dialogs.GameDialog;
-import de.thegerman.circletd.handler.DeleteTowerHandler;
-import de.thegerman.circletd.handler.DialogHandler;
+import de.thegerman.circletd.gems.Gem;
+import de.thegerman.circletd.handler.GemPickHandler;
 import de.thegerman.circletd.handler.NewTowerHandler;
+import de.thegerman.circletd.handler.TouchEventHandler;
+import de.thegerman.circletd.handler.TowerOptionsHandler;
+import de.thegerman.circletd.handler.UserMessageHandler;
+import de.thegerman.circletd.notification.Notification;
 import de.thegerman.circletd.objects.CircleObject;
 import de.thegerman.circletd.objects.GraphicalObject;
 import de.thegerman.circletd.objects.creeps.Creep;
@@ -25,20 +32,22 @@ import de.thegerman.circletd.ui.GemsUIElement;
 import de.thegerman.circletd.ui.LivesUIElement;
 import de.thegerman.circletd.ui.UIElement;
 
-public abstract class Level implements DialogHandler {
+public abstract class Level implements UserMessageHandler {
 	
 	public static float INTERFACE_PADDING = 20;
 	
 	private List<GameDialog> dialogs = new CopyOnWriteArrayList<GameDialog>();
-	private List<CircleObject> removeCreeps = new ArrayList<CircleObject>();
-	private List<CircleObject> removeProjectiles = new ArrayList<CircleObject>();
-	private List<CircleObject> removeTowers = new ArrayList<CircleObject>();
+	private List<Notification> notifications = new CopyOnWriteArrayList<Notification>();
+	private List<TouchEventHandler> touchEventHandler = new CopyOnWriteArrayList<TouchEventHandler>();
+	private Set<CircleObject> removeCreeps = new HashSet<CircleObject>();
+	private Set<CircleObject> removeProjectiles = new HashSet<CircleObject>();
+	private Set<CircleObject> removeTowers = new HashSet<CircleObject>();
+	private Set<CircleObject> removeGems = new HashSet<CircleObject>();
 	private List<UIElement> uiElements = new ArrayList<UIElement>();
 	protected MainBase mainBase;
 	protected GameProperties gameProperties;
 	protected boolean initialized = false;
 	protected NewTowerHandler newTowerHandler;
-	protected DeleteTowerHandler deleteTowerHandler;
 	private Paint connectionPaint;
 	
 	public Level(GameProperties gameProperties) {
@@ -53,48 +62,79 @@ public abstract class Level implements DialogHandler {
 	}
 
 	final public void update(long timespan) {
+		updateNotification(timespan);
+		
+		if (gameProperties.isGamePaused()) return;
+		
 		removeCreeps.clear();
 		removeProjectiles.clear();
 		removeTowers.clear();
+		removeGems.clear();
 		
 		updateCreeps(timespan);
 		updateProjectiles(timespan);
 		updateTower(timespan);
+		updateGems(timespan);
 		
 		additionalUpdates(timespan);
 		
 		gameProperties.getCreeps().removeAll(removeCreeps);
 		gameProperties.getProjectiles().removeAll(removeProjectiles);
 		gameProperties.getTowers().removeAll(removeTowers);
+		gameProperties.getGems().removeAll(removeGems);
 	}
-	
 	public void additionalUpdates(long timespan) {
 		// Can be overridden by subclass to perform level-dependent updates
 	}
+	
+	private void updateGems(long timespan) {
+		for(Gem gem : gameProperties.getGems()) {
+			if(!gem.isAlive() || gem.update(timespan, gameProperties)){
+				removeGem(gem);
+			}
+		}
+	}
 
 	private void updateCreeps(long timespan) {
-		for(Creep creep : gameProperties.getCreeps()) {
-			if(creep.update(timespan, gameProperties)){
+		iterate_creeps: for(Creep creep : gameProperties.getCreeps()) {
+			if(!creep.isAlive() || creep.update(timespan, gameProperties)){
 				removeCreep(creep);
+			} else {
+				
+				// Check for collision with projectiles
+				for (Projectile projectile : gameProperties.getProjectiles()) {
+					if(projectile.isAlive() && projectile.collides(creep)){
+						if (projectile.hitAction(creep, gameProperties)) {
+							removeProjectile(projectile);
+						}
+						if (creep.hitAction(projectile, gameProperties)) {
+							removeCreep(creep);
+							continue iterate_creeps;
+						}
+					}
+				}
+				
+				// Check for collision with towers
+				for (Tower tower : gameProperties.getTowers()) {
+					if(tower.isAlive() && tower.collides(creep)){
+						if (tower.hitAction(creep, gameProperties)) {
+							removeTower(tower);
+						}
+						if (creep.hitAction(tower, gameProperties)) {
+							removeCreep(creep);
+							continue iterate_creeps;
+						}
+					}
+				}
+				
 			}
 		}
 	}
 
 	private void updateProjectiles(long timespan) {
 		for(Projectile projectile : gameProperties.getProjectiles()) {
-			if(projectile.update(timespan, gameProperties)){
+			if(!projectile.isAlive() || projectile.update(timespan, gameProperties)){
 				removeProjectile(projectile);
-			} else {
-				for(Creep creep : gameProperties.getCreeps()) {
-					if(projectile.collides(creep)){
-						if (projectile.hitAction(creep, gameProperties)) {
-							removeProjectile(projectile);
-						}
-						if (creep.hitAction(projectile, gameProperties)) {
-							removeCreep(creep);
-						}
-					}
-				}
 			}
 		}
 	}
@@ -103,19 +143,23 @@ public abstract class Level implements DialogHandler {
 		for(Tower tower : gameProperties.getTowers()) {
 			if (!tower.isAlive() || tower.update(timespan, gameProperties)) {
 				removeTower(tower);
-			} else {
-				for(Creep creep : gameProperties.getCreeps()) {
-					if(tower.collides(creep)){
-						if (tower.hitAction(creep, gameProperties)) {
-							removeTower(tower);
-						}
-						if (creep.hitAction(tower, gameProperties)) {
-							removeCreep(creep);
-						}
-					}
-				}
-			}
+			} 
 		};
+	}
+
+	private void updateNotification(long timespan) {
+		if (!notifications.isEmpty()) {
+			Notification notification = notifications.get(notifications.size() - 1);
+			if (notification.update(timespan)) {
+				notifications.remove(notification);
+			}
+		}
+	}
+
+	
+	protected void removeGem(Gem gem) {
+		gem.destroy();
+		removeGems.add(gem);
 	}
 
 	protected void removeCreep(Creep creep) {
@@ -146,7 +190,8 @@ public abstract class Level implements DialogHandler {
 		drawProjectiles(canvas);
 		drawNewTower(canvas);
 		drawInterface(canvas);
-		drawDialogs(canvas);
+		drawDialog(canvas);
+		drawNotification(canvas);
 	}
 
 	private void drawGems(Canvas canvas) {
@@ -161,9 +206,15 @@ public abstract class Level implements DialogHandler {
 		}
 	}
 
-	private void drawDialogs(Canvas canvas) {
+	private void drawDialog(Canvas canvas) {
 		if (!dialogs.isEmpty()) {
 			dialogs.get(dialogs.size() - 1).draw(canvas);
+		}
+	}
+
+	private void drawNotification(Canvas canvas) {
+		if (!notifications.isEmpty()) {
+			notifications.get(notifications.size() - 1).draw(canvas);
 		}
 	}
 
@@ -208,14 +259,23 @@ public abstract class Level implements DialogHandler {
 		connectionPaint = new Paint();
 		connectionPaint.setColor(Color.WHITE);
 		connectionPaint.setStrokeWidth(10);
-		newTowerHandler = new NewTowerHandler(this);
-		deleteTowerHandler = new DeleteTowerHandler();
+		initializeTouchEventHandler();
 		mainBase = new MainBase(gameProperties.getWidth()/2, gameProperties.getHeight() - 400);
 		gameProperties.setLives(mainBase.getLives());
 		gameProperties.getTowers().add(mainBase);
 		initiliazeUI();
 	}
 	
+	private void initializeTouchEventHandler() {
+		touchEventHandler.clear();
+		
+		newTowerHandler = new NewTowerHandler(this);
+		touchEventHandler.add(newTowerHandler);
+		
+		touchEventHandler.add(new GemPickHandler());
+		touchEventHandler.add(new TowerOptionsHandler(this));
+	}
+
 	public boolean isInitialized() {
 		return initialized;
 	}
@@ -226,13 +286,16 @@ public abstract class Level implements DialogHandler {
 		float currentY = event.getY() / gameProperties.getRatio();
 		boolean returnValue = false;
 		if (!dialogs.isEmpty()) {
-			returnValue |= dialogs.get(dialogs.size() - 1).handleTouchEvent(action, currentX, currentY, gameProperties);
+			returnValue = dialogs.get(dialogs.size() - 1).handleTouchEvent(action, currentX, currentY, gameProperties);
 		}
-		if (!returnValue) {
-  		returnValue |= newTowerHandler.handleTouchEvent(action, currentX, currentY, gameProperties);
-  		returnValue |= deleteTowerHandler.handleTouchEvent(action, currentX, currentY, gameProperties);
+		
+		Iterator<TouchEventHandler> handlerIter = touchEventHandler.iterator();
+		while(!returnValue && handlerIter.hasNext()) {
+			TouchEventHandler handler = handlerIter.next();
+			returnValue = handler.handleTouchEvent(action, currentX, currentY, gameProperties);
 		}
-		return returnValue;
+		
+		return true;
 	}
 	
 	@Override
@@ -243,6 +306,11 @@ public abstract class Level implements DialogHandler {
 	@Override
 	public void closeDialog(GameDialog dialog) {
 		this.dialogs.remove(dialog);
+	}
+	
+	@Override
+	public void addNotification(Notification notification) {
+		this.notifications.add(notification);
 	}
 	
 	public MainBase getMainBase() {

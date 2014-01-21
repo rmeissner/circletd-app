@@ -10,7 +10,7 @@ public class ShooterTower extends Tower {
 	public static final long SHOOTING_DELAY = 3000;
 	public static final long SHOOTING_RANGE = 400;
 	
-	private long lastShot;
+	private long lastShot = SHOOTING_DELAY;
 
 	public ShooterTower(float x, float y, ProviderTower providerTower) {
 		super(x, y, 30, providerTower);
@@ -48,6 +48,11 @@ public class ShooterTower extends Tower {
 	@Override
 	public int getEnergyLevel() {
 		return -1;
+	}
+
+	@Override
+	public int getCosts() {
+		return 100;
 	}
 
 }

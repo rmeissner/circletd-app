@@ -3,10 +3,15 @@
 
     <string name="app_name">Circle TD</string>
     <string name="cancel">Cancel</string>
+    <string name="destroy">Destroy</string>
     <string name="basic_tower">Basic Tower</string>
     <string name="main_base">Main Base</string>
     <string name="extension_tower">Extension Tower</string>
     <string name="shooter_tower">Basic Shooter</string>
     <string name="energy_tower">Energy Tower</string>
+    <string name="no_energy">Not enough Energy!</string>
+    <string name="no_gems">Not enough Gems!</string>
+    <string name="no_children_space">No more connections available!</string>
+    <string name="no_space">There is already a tower!</string>
 
 </resources>

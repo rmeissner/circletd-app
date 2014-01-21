@@ -2,18 +2,20 @@ package de.thegerman.circletd.handler;
 
 import android.view.MotionEvent;
 import de.thegerman.circletd.GameProperties;
+import de.thegerman.circletd.dialogs.TowerOptionsDialog;
 import de.thegerman.circletd.objects.towers.MainBase;
 import de.thegerman.circletd.objects.towers.Tower;
 
-public class DeleteTowerHandler implements MotionEventHandler {
+public class TowerOptionsHandler implements TouchEventHandler {
 	
 	private Tower selectedTower;
 	private float eventStartX;
 	private float eventStartY;
 	private boolean eventMoved;
+	private UserMessageHandler dialogHandler;
 	
-	public Tower getSelectedTower() {
-		return selectedTower;
+	public TowerOptionsHandler(UserMessageHandler dialogHandler) {
+		this.dialogHandler = dialogHandler;
 	}
 	
 	@Override
@@ -22,7 +24,8 @@ public class DeleteTowerHandler implements MotionEventHandler {
 		case MotionEvent.ACTION_POINTER_UP:
 		case MotionEvent.ACTION_UP: {
 			if (selectedTower != null && !eventMoved) {
-				selectedTower.destroy();
+				gameProperties.pauseGame();
+				dialogHandler.openDialog(new TowerOptionsDialog(selectedTower, gameProperties, dialogHandler));
 			}
 			selectedTower = null;
 			break;

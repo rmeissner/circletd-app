@@ -1,8 +1,11 @@
 package de.thegerman.circletd.handler;
 
 import android.view.MotionEvent;
+import de.thegerman.circletd.GameApplication;
 import de.thegerman.circletd.GameProperties;
+import de.thegerman.circletd.R;
 import de.thegerman.circletd.dialogs.NewTowerDialog;
+import de.thegerman.circletd.notification.Notification;
 import de.thegerman.circletd.objects.towers.BasicTower;
 import de.thegerman.circletd.objects.towers.ProviderTower;
 import de.thegerman.circletd.objects.towers.Tower;
@@ -14,10 +17,10 @@ public class NewTowerHandler implements TouchEventHandler {
 	private float eventStartX;
 	private float eventStartY;
 	private boolean eventMoved;
-	private DialogHandler dialogHandler;
+	private UserMessageHandler userMessageHandler;
 	
-	public NewTowerHandler(DialogHandler dialogHandler) {
-		this.dialogHandler = dialogHandler;
+	public NewTowerHandler(UserMessageHandler userMessageHandler) {
+		this.userMessageHandler = userMessageHandler;
 	}
 	
 	public Tower getNewTower() {
@@ -40,7 +43,9 @@ public class NewTowerHandler implements TouchEventHandler {
 				}
 				if (validPosition) {
 					gameProperties.pauseGame();
-					dialogHandler.openDialog(new NewTowerDialog(tempTower, selectedTower, gameProperties, dialogHandler));
+					userMessageHandler.openDialog(new NewTowerDialog(tempTower, selectedTower, gameProperties, userMessageHandler));
+				} else {
+					userMessageHandler.addNotification(new Notification(GameApplication.getAppContext().getString(R.string.no_space), gameProperties));
 				}
 				tempTower = null;
 			}
@@ -61,12 +66,12 @@ public class NewTowerHandler implements TouchEventHandler {
 			break;
 		}
 		case MotionEvent.ACTION_MOVE: {
-			if (selectedTower != null && selectedTower.isAlive() && selectedTower.hasSpaceForChildren()) {
+			if (selectedTower != null && selectedTower.isAlive()) {
 				if (!eventMoved) {
 					float xDist = eventStartX - currentX;
 					float yDist = eventStartY - currentY;
 					eventMoved = Math.sqrt(xDist * xDist + yDist * yDist) > 50;
-				} else {
+				} else if (selectedTower.hasSpaceForChildren()) {
 					float xDist = selectedTower.getX() - currentX;
 					float yDist = selectedTower.getY() - currentY;
 					float dist = (float) Math.sqrt(xDist * xDist + yDist * yDist);
@@ -80,11 +85,14 @@ public class NewTowerHandler implements TouchEventHandler {
 					} else {
 						tempTower.setPosition(selectedTower.getX() - xDist, selectedTower.getY() - yDist);
 					}
+				} else {
+					userMessageHandler.addNotification(new Notification(GameApplication.getAppContext().getString(R.string.no_children_space), gameProperties));
+					selectedTower = null;
 				}
 			}
 			break;
 		}
 		}
-		return true;
+		return false;
 	}
 }

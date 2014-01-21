@@ -40,4 +40,9 @@ public class MainBase extends ProviderTower {
 		return 5;
 	}
 
+	@Override
+	public int getCosts() {
+		return Integer.MAX_VALUE;
+	}
+
 }

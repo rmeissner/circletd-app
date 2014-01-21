@@ -32,14 +32,16 @@ public class TankCreep extends Creep {
 	
 	@Override
 	public boolean update(long timespan, GameProperties gameProperties) {
-		Tower target = targetReference.get();
-		if (target != null && target.isAlive()) {
-  		float xd = target.getX() - x;
-  		float yd = target.getY() - y;
-  		float c = (float) Math.sqrt(xd * xd + yd * yd);
-  		if(c == 0) c = 1;
-  		xspeed = xd / c;
-			yspeed = yd / c;
+		if (targetReference != null) {
+  		Tower target = targetReference.get();
+  		if (target != null && target.isAlive()) {
+    		float xd = target.getX() - x;
+    		float yd = target.getY() - y;
+    		float c = (float) Math.sqrt(xd * xd + yd * yd);
+    		if(c == 0) c = 1;
+    		xspeed = xd / c;
+  			yspeed = yd / c;
+  		}
 		}
 		return super.update(timespan, gameProperties);
 	}

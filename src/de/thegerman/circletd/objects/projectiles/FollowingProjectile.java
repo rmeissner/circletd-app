@@ -23,14 +23,16 @@ public class FollowingProjectile extends Projectile {
 
 	@Override
 	public boolean update(long timespan, GameProperties gameProperties) {
-		Creep target = targetReference.get();
-		if (target != null && target.isAlive()) {
-			float xd = target.getX() - getX();
-			float yd = target.getY() - getY();
-			float c = (float) Math.sqrt(xd * xd + yd * yd);
-			if(c == 0) c = 1;
-			xspeed = xd / c;
-			yspeed = yd / c;
+		if (targetReference != null) {
+  		Creep target = targetReference.get();
+  		if (target != null && target.isAlive()) {
+  			float xd = target.getX() - getX();
+  			float yd = target.getY() - getY();
+  			float c = (float) Math.sqrt(xd * xd + yd * yd);
+  			if(c == 0) c = 1;
+  			xspeed = xd / c;
+  			yspeed = yd / c;
+  		}
 		}
 		return super.update(timespan, gameProperties);
 	}
