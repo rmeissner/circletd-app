@@ -42,7 +42,7 @@ public class TestLevel extends Level {
 	@Override
 	public void initialize() {
 		super.initialize();
-		gameProperties.addGems(200000);
+		gameProperties.addGems(200);
 	}
 	
 	protected void showTitle(String title) {

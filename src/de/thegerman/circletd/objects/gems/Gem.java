@@ -8,9 +8,9 @@ import de.thegerman.circletd.objects.CircleObject;
 
 public abstract class Gem extends CircleObject {
 	
-	private static float staticAngle;
-	private static double cos;
-	private static double sin;
+	private static float staticAngle = -1;
+	private static double cos = -1;
+	private static double sin = -1;
 	
 	public static float ROTATION_SPEED = 30; 
 
