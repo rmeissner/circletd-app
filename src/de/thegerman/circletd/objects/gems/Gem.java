@@ -7,6 +7,10 @@ import de.thegerman.circletd.objects.CircleObject;
 
 public abstract class Gem extends CircleObject {
 	
+	private static float staticAngle;
+	private static double cos;
+	private static double sin;
+	
 	public static float ROTATION_SPEED = 30; 
 
 	private int gemColor;
@@ -35,8 +39,11 @@ public abstract class Gem extends CircleObject {
 		
 		Path gemPath = new Path();
 
-		double cos = Math.cos(angle * Math.PI / 180.0);
-		double sin = Math.sin(angle * Math.PI / 180.0);
+		if (staticAngle != angle) {
+			staticAngle = angle;
+  		cos = Math.cos(angle * Math.PI / 180.0);
+  		sin = Math.sin(angle * Math.PI / 180.0);
+		}
 		float x1 = (float) (-1 * sin);
 		float y1 = (float) (cos);
 		float x2 = (float) (-0.951 * cos - 0.309 * sin);
