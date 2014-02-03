@@ -28,6 +28,13 @@ public abstract class CircleObject implements AnimatedObject {
 		return(distance <= getRadius() + otherCircle.getRadius());
 	}
 	
+	public double distanceTo(CircleObject otherCircle){
+		if (otherCircle == null) return -1;
+		float xDist = otherCircle.getX() - getX();
+		float yDist = otherCircle.getY() - getY();
+		return Math.sqrt(xDist * xDist + yDist * yDist);
+	}
+	
 	@Override
 	public void setPosition(float newX, float newY) {
 		x = newX;

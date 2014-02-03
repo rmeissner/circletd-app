@@ -22,6 +22,7 @@ import de.thegerman.circletd.notification.Notification;
 import de.thegerman.circletd.objects.CircleObject;
 import de.thegerman.circletd.objects.GraphicalObject;
 import de.thegerman.circletd.objects.creeps.Creep;
+import de.thegerman.circletd.objects.effects.Effect;
 import de.thegerman.circletd.objects.gems.Gem;
 import de.thegerman.circletd.objects.projectiles.Projectile;
 import de.thegerman.circletd.objects.towers.MainBase;
@@ -43,6 +44,7 @@ public abstract class Level implements UserMessageHandler {
 	private Set<CircleObject> removeProjectiles = new HashSet<CircleObject>();
 	private Set<CircleObject> removeTowers = new HashSet<CircleObject>();
 	private Set<CircleObject> removeGems = new HashSet<CircleObject>();
+	private Set<Effect> removeEffects = new HashSet<Effect>();
 	private List<UIElement> uiElements = new ArrayList<UIElement>();
 	protected MainBase mainBase;
 	protected GameProperties gameProperties;
@@ -70,11 +72,13 @@ public abstract class Level implements UserMessageHandler {
 		removeProjectiles.clear();
 		removeTowers.clear();
 		removeGems.clear();
+		removeEffects.clear();
 		
 		updateCreeps(timespan);
 		updateProjectiles(timespan);
 		updateTower(timespan);
 		updateGems(timespan);
+		updateEffects(timespan);
 		
 		additionalUpdates(timespan);
 		
@@ -82,9 +86,18 @@ public abstract class Level implements UserMessageHandler {
 		gameProperties.getProjectiles().removeAll(removeProjectiles);
 		gameProperties.getTowers().removeAll(removeTowers);
 		gameProperties.getGems().removeAll(removeGems);
+		gameProperties.getEffects().removeAll(removeEffects);
 	}
 	public void additionalUpdates(long timespan) {
 		// Can be overridden by subclass to perform level-dependent updates
+	}
+	
+	private void updateEffects(long timespan) {
+		for(Effect effect : gameProperties.getEffects()) {
+			if(effect.update(timespan, gameProperties)){
+				removeEffect(effect);
+			}
+		}
 	}
 	
 	private void updateGems(long timespan) {
@@ -156,6 +169,9 @@ public abstract class Level implements UserMessageHandler {
 		}
 	}
 
+	protected void removeEffect(Effect effect) {
+		removeEffects.add(effect);
+	}
 	
 	protected void removeGem(Gem gem) {
 		gem.destroy();
@@ -164,7 +180,6 @@ public abstract class Level implements UserMessageHandler {
 
 	protected void removeCreep(Creep creep) {
 		gameProperties.getGems().add(creep.getDroppedGem());
-		creep.destroy();
 		removeCreeps.add(creep);
 	}
 
@@ -188,6 +203,7 @@ public abstract class Level implements UserMessageHandler {
 		drawCreeps(canvas);
 		drawGems(canvas);
 		drawProjectiles(canvas);
+		drawEffects(canvas);
 		drawNewTower(canvas);
 		drawInterface(canvas);
 		
@@ -201,6 +217,12 @@ public abstract class Level implements UserMessageHandler {
 		// Can be overridden by subclass to perform level-dependent drawing
 	}
 
+	private void drawEffects(Canvas canvas) {
+		for(GraphicalObject effect : gameProperties.getEffects()) {
+			effect.draw(canvas);
+		};
+	}
+	
 	private void drawGems(Canvas canvas) {
 		for(GraphicalObject gem : gameProperties.getGems()) {
 			gem.draw(canvas);

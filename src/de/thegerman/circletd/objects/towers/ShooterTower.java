@@ -12,6 +12,7 @@ import de.thegerman.circletd.objects.projectiles.FollowingProjectile;
 import de.thegerman.circletd.upgrades.ShootingTowerDamageUpgrade;
 import de.thegerman.circletd.upgrades.ShootingTowerDelayUpgrade;
 import de.thegerman.circletd.upgrades.ShootingTowerRangeUpgrade;
+import de.thegerman.circletd.upgrades.ShootingTowerSplashUpgrade;
 import de.thegerman.circletd.upgrades.Upgrade;
 
 public class ShooterTower extends Tower {
@@ -20,6 +21,7 @@ public class ShooterTower extends Tower {
 	private ShootingTowerDelayUpgrade speedUpgrade;
 	private ShootingTowerRangeUpgrade rangeUpgrade;
 	private ShootingTowerDamageUpgrade damageUpgrade;
+	private ShootingTowerSplashUpgrade splashUpgrade;
 	private Paint rangePaint;
 
 	public ShooterTower(float x, float y, ProviderTower providerTower) {
@@ -28,6 +30,7 @@ public class ShooterTower extends Tower {
 		this.speedUpgrade = new ShootingTowerDelayUpgrade();
 		this.rangeUpgrade = new ShootingTowerRangeUpgrade();
 		this.damageUpgrade = new ShootingTowerDamageUpgrade();
+		this.splashUpgrade = new ShootingTowerSplashUpgrade();
 		this.rangePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		this.rangePaint.setStyle(Style.STROKE);
 		this.rangePaint.setColor(Color.WHITE);
@@ -51,7 +54,7 @@ public class ShooterTower extends Tower {
 				}
 			}
 			if (target != null) {
-				gameProperties.getProjectiles().add(new FollowingProjectile(this, target, damageUpgrade));
+				gameProperties.getProjectiles().add(new FollowingProjectile(this, target, splashUpgrade.getCurrentValue(), damageUpgrade));
 				lastShot = 0;
 			}
 		}
@@ -90,6 +93,7 @@ public class ShooterTower extends Tower {
 	public List<Upgrade<?>> getUpgrades() {
 		List<Upgrade<?>> upgrades = super.getUpgrades();
 		upgrades.add(damageUpgrade);
+		upgrades.add(splashUpgrade);
 		upgrades.add(speedUpgrade);
 		upgrades.add(rangeUpgrade);
 		return upgrades;

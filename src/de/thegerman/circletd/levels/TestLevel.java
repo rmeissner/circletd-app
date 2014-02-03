@@ -42,7 +42,7 @@ public class TestLevel extends Level {
 	@Override
 	public void initialize() {
 		super.initialize();
-		gameProperties.addGems(200);
+		gameProperties.addGems(200000);
 	}
 	
 	protected void showTitle(String title) {
@@ -72,10 +72,13 @@ public class TestLevel extends Level {
 				switch (type) {
 				default:
 					gameProperties.getCreeps().add(new BasicCreep(startX, 100, mainBase));
+					break;
 				case 0:
 					gameProperties.getCreeps().add(new AttackerCreep(startX, 100, mainBase));
+					break;
 				case 1:
 					gameProperties.getCreeps().add(new TankCreep(startX, 100, mainBase));
+					break;
 				}
 				type = (type + 1) % 5;
 				break;
@@ -83,8 +86,10 @@ public class TestLevel extends Level {
 				switch (type) {
 				default:
 					gameProperties.getCreeps().add(new BasicCreep(startX, 100, mainBase));
+					break;
 				case 0:
 					gameProperties.getCreeps().add(new TankCreep(startX, 100, mainBase));
+					break;
 				}
 				type = (type + 1) % 4;
 				break;

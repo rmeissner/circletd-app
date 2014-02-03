@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import de.thegerman.circletd.objects.creeps.Creep;
+import de.thegerman.circletd.objects.effects.Effect;
 import de.thegerman.circletd.objects.gems.Gem;
 import de.thegerman.circletd.objects.projectiles.Projectile;
 import de.thegerman.circletd.objects.towers.Tower;
@@ -14,6 +15,7 @@ public class GameProperties {
 	protected List<Creep> creeps = new CopyOnWriteArrayList<Creep>();
 	protected List<Projectile> projectiles = new CopyOnWriteArrayList<Projectile>();
 	protected List<Gem> gems = new CopyOnWriteArrayList<Gem>();
+	protected List<Effect> effects = new CopyOnWriteArrayList<Effect>();
 	float ratio = 1;
 	int width = 0;
 	int height = 0;
@@ -89,6 +91,14 @@ public class GameProperties {
 	
 	public void clearGems() {
 		gems.clear();
+	}
+
+	public List<Effect> getEffects() {
+		return effects;
+	}
+	
+	public void clearEffects() {
+		effects.clear();
 	}
 
 	public void initializeNewGame() {

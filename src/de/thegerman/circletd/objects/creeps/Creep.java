@@ -8,7 +8,6 @@ import de.thegerman.circletd.objects.towers.Tower;
 
 public abstract class Creep extends CircleObject {
 
-	protected boolean alive = true;
 	protected float xspeed = 0;
 	protected float yspeed = 1;
 	private int lives;
@@ -39,13 +38,9 @@ public abstract class Creep extends CircleObject {
 	public boolean hitAction(Tower tower, GameProperties gameProperties) {
 		return looseLives(1);
 	}
-
-	public void destroy() {
-		alive = false;
-	}
 	
 	public boolean isAlive() {
-		return alive;
+		return lives > 0;
 	}
 
 	protected boolean looseLives(int damage) {

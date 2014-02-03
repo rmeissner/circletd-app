@@ -40,6 +40,8 @@ public final class R {
         public static final int range_with_number=0x7f030017;
         public static final int shooter_tower=0x7f030019;
         public static final int speed_upgrade=0x7f03001a;
+        public static final int splash_upgrade=0x7f03001b;
+        public static final int splash_with_number=0x7f03001c;
         public static final int upgrade_for_gems=0x7f03000b;
     }
 }

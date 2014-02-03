@@ -28,5 +28,7 @@
     <string name="range_upgrade">Range Upgrade</string>
     <string name="shooter_tower">Basic Shooter</string>
     <string name="speed_upgrade">Speed Upgrade</string>
+    <string name="splash_upgrade">Splash Upgrade</string>
+    <string name="splash_with_number">%.0f Splash Range</string>
 
 </resources>

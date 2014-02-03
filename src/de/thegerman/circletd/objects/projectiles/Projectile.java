@@ -16,7 +16,7 @@ public abstract class Projectile extends CircleObject {
 
 	public Projectile(float x, float y, float radius, Tower origin) {
 		super(x, y, radius);
-		towerReference = new WeakReference<Tower>(origin);
+		this.towerReference = new WeakReference<Tower>(origin);
 	}
 	
 	public abstract float getSpeed();

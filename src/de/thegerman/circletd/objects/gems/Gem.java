@@ -20,7 +20,7 @@ public abstract class Gem extends CircleObject {
 	private boolean alive = true;
 	
 	public Gem(float xPos, float yPos, int gemColor) {
-		super(xPos, yPos, 75);
+		super(xPos, yPos, 60);
 		this.gemColor = gemColor;
 		this.angle = 0;
 	}
