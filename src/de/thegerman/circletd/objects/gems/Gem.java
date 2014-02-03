@@ -3,6 +3,7 @@ package de.thegerman.circletd.objects.gems;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import de.thegerman.circletd.GameProperties;
 import de.thegerman.circletd.objects.CircleObject;
 
 public abstract class Gem extends CircleObject {
@@ -29,6 +30,13 @@ public abstract class Gem extends CircleObject {
 	@Override
 	public void draw(Canvas canvas) {
 		Gem.drawGem(canvas, gemColor, angle, getX(), getY(), radius);
+	}
+
+	@Override
+	public boolean update(long timespan, GameProperties gameProperties) {
+		angle += ROTATION_SPEED * timespan/1000f;
+		angle %= 360;
+		return false;
 	}
 
 	public static void drawGem(Canvas canvas, int gemColor, float angle, float xPos, float yPos, float radius) {

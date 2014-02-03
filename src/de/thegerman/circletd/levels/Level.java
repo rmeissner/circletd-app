@@ -181,7 +181,7 @@ public abstract class Level implements UserMessageHandler {
 		removeProjectiles.add(projectile);
 	}
 
-	public void draw(Canvas canvas) {
+	final public void draw(Canvas canvas) {
 		canvas.drawColor(Color.BLACK);
 		drawConnections(canvas);
 		drawTower(canvas);
@@ -190,8 +190,15 @@ public abstract class Level implements UserMessageHandler {
 		drawProjectiles(canvas);
 		drawNewTower(canvas);
 		drawInterface(canvas);
+		
+		additionalDrawing(canvas);
+		
 		drawDialog(canvas);
 		drawNotification(canvas);
+	}
+	
+	public void additionalDrawing(Canvas canvas) {
+		// Can be overridden by subclass to perform level-dependent drawing
 	}
 
 	private void drawGems(Canvas canvas) {

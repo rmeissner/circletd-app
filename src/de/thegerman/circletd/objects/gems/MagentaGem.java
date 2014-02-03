@@ -1,7 +1,6 @@
 package de.thegerman.circletd.objects.gems;
 
 import android.graphics.Color;
-import de.thegerman.circletd.GameProperties;
 
 public class MagentaGem extends Gem {
 
@@ -10,15 +9,8 @@ public class MagentaGem extends Gem {
 	}
 
 	@Override
-	public boolean update(long timespan, GameProperties gameProperties) {
-		angle += ROTATION_SPEED * timespan/1000f;
-		angle %= 360;
-		return false;
-	}
-
-	@Override
 	public int getValue() {
-		return 300;
+		return 150;
 	}
 
 }
