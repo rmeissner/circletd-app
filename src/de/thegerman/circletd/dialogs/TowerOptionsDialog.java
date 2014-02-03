@@ -16,14 +16,12 @@ public class TowerOptionsDialog extends GameDialog {
 	
 	private static final int DIALOG_PADDING = 100;
 	
-	private Tower selectedTower;
 	private GameProperties gameProperties;
 	private Paint paint;
 	private List<TowerOptionsDialogItem> items = new ArrayList<TowerOptionsDialogItem>();
 
 	public TowerOptionsDialog(Tower selectedTower, GameProperties gameProperties, UserMessageHandler dialogHandler) {
 		super(dialogHandler);
-		this.selectedTower = selectedTower;
 		this.gameProperties = gameProperties;
 		this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		this.paint.setColor(Color.DKGRAY);
@@ -38,14 +36,14 @@ public class TowerOptionsDialog extends GameDialog {
 		for (Upgrade<?> towerUpgrade : towerUpgrades) {
 			items.add(new TowerOptionsUpgradeDialogItem(gameProperties.getWidth() - DIALOG_PADDING*2, 
 					NewTowerDialogItem.HEIGHT, DIALOG_PADDING, 
-					itemTopPos, towerUpgrade, userMessageHandler));
+					itemTopPos, towerUpgrade, selectedTower, userMessageHandler));
 			
 			itemTopPos += NewTowerDialogItem.HEIGHT + DIALOG_PADDING/2;
 		}
 		
 		items.add(new TowerOptionsDestroyDialogItem(gameProperties.getWidth() - DIALOG_PADDING*2, 
 				NewTowerDialogItem.HEIGHT, DIALOG_PADDING, 
-				itemTopPos));
+				itemTopPos, selectedTower));
 		
 		itemTopPos += NewTowerDialogItem.HEIGHT + DIALOG_PADDING/2;
 		items.add(new TowerOptionsCancelDialogItem(gameProperties.getWidth() - DIALOG_PADDING*2, 
@@ -65,7 +63,7 @@ public class TowerOptionsDialog extends GameDialog {
 
 		for (TowerOptionsDialogItem item : items) {
 			if (item.contains(currentX, currentY)) {
-				item.performAction(selectedTower, gameProperties);
+				item.performAction(gameProperties);
 				continueGame();
 				break;
 			}

@@ -95,4 +95,9 @@ public class ShooterTower extends Tower {
 		return upgrades;
 	}
 
+	@Override
+	public int getUpgradeBaseCosts() {
+		return 25;
+	}
+
 }

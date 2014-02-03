@@ -7,7 +7,6 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import de.thegerman.circletd.GameProperties;
 import de.thegerman.circletd.objects.GraphicalObject;
-import de.thegerman.circletd.objects.towers.Tower;
 
 public abstract class TowerOptionsDialogItem implements GraphicalObject{
 	
@@ -62,5 +61,5 @@ public abstract class TowerOptionsDialogItem implements GraphicalObject{
 		this.top = top;
 	}
 	
-	public abstract void performAction(Tower tower, GameProperties gameProperties);
+	public abstract void performAction(GameProperties gameProperties);
 }

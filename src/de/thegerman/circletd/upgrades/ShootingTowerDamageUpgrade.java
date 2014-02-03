@@ -7,13 +7,12 @@ public class ShootingTowerDamageUpgrade extends Upgrade<Integer> {
 	
 	private static final int VALUE_BASE = 1;
 	private static final int VALUE_STEP = 1;
-	private static final int PRICE_STEP = 25;
 	private static final int MAX_LEVEL = 10;
 
 	public ShootingTowerDamageUpgrade() {
 		super(GameApplication.getAppContext().getString(R.string.damage_upgrade));
 		for (int i = 0; i <= MAX_LEVEL; i ++) {
-			addUpgradeLevel(new UpgradeLevel<Integer>(PRICE_STEP * i, VALUE_BASE + i * VALUE_STEP));
+			addUpgradeLevel(VALUE_BASE + i * VALUE_STEP);
 		}
 	}
 

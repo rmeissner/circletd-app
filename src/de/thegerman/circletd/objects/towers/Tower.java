@@ -51,6 +51,7 @@ public abstract class Tower extends CircleObject {
 	public abstract boolean update(long timespan, GameProperties gameProperties);
 	public abstract TowerType getType();
 	public abstract int getEnergyLevel();
+	public abstract int getUpgradeBaseCosts();
 	public abstract int getCosts(GameProperties gameProperties);
 	
 	public List<Upgrade<?>> getUpgrades() {
@@ -82,6 +83,14 @@ public abstract class Tower extends CircleObject {
 
 	public boolean additionalDrawActivated() {
 		return additionalDraw;
+	}
+
+	public int getUpgradePrize() {
+		int overallLevel = 0;
+		for (Upgrade<?> upgrade : getUpgrades()) {
+			overallLevel += upgrade.getCurrentLevel();
+		}
+		return (overallLevel + 1) * getUpgradeBaseCosts();
 	}
 	
 }

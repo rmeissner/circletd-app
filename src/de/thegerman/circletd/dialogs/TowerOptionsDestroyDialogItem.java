@@ -8,12 +8,15 @@ import de.thegerman.circletd.objects.towers.Tower;
 
 public class TowerOptionsDestroyDialogItem extends TowerOptionsDialogItem {
 
-	public TowerOptionsDestroyDialogItem(float width, float height, float left, float top) {
+	private Tower tower;
+
+	public TowerOptionsDestroyDialogItem(float width, float height, float left, float top, Tower tower) {
 		super(GameApplication.getAppContext().getString(R.string.destroy), width, height, left, top);
+		this.tower = tower;
 	}
 
 	@Override
-	public void performAction(Tower tower, GameProperties gameProperties) {
+	public void performAction(GameProperties gameProperties) {
 		tower.destroy();
 	}
 

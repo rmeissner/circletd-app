@@ -30,4 +30,9 @@ public class ExtensionTower extends ProviderTower {
 		return 50;
 	}
 
+	@Override
+	public int getUpgradeBaseCosts() {
+		return 50;
+	}
+
 }

@@ -19,10 +19,12 @@ public class TowerOptionsUpgradeDialogItem extends TowerOptionsDialogItem {
 
 	private Upgrade<?> upgrade;
 	private UserMessageHandler userMessageHandler;
+	private Tower tower;
 
-	public TowerOptionsUpgradeDialogItem(float width, float height, float left, float top, Upgrade<?> upgrade, UserMessageHandler userMessageHandler) {
+	public TowerOptionsUpgradeDialogItem(float width, float height, float left, float top, Upgrade<?> upgrade, Tower tower, UserMessageHandler userMessageHandler) {
 		super(upgrade.getNameWithLevel(), width, height, left, top);
 		this.upgrade = upgrade;
+		this.tower = tower;
 		this.userMessageHandler = userMessageHandler;
 	}
 	
@@ -38,7 +40,7 @@ public class TowerOptionsUpgradeDialogItem extends TowerOptionsDialogItem {
 			canvas.drawText(text, textXPos, top + TEXT_SIZE + DIALOG_ITEM_PADDING, textPaint);
 
 			textPaint.setTextSize(DETAILS_TEXT_SIZE);
-			canvas.drawText(GameApplication.getAppContext().getString(R.string.upgrade_for_gems, upgrade.getDescription(), upgrade.getUpgradePrize()), textXPos, top + height - TEXT_PADDING - DIALOG_ITEM_PADDING, textPaint);
+			canvas.drawText(GameApplication.getAppContext().getString(R.string.upgrade_for_gems, upgrade.getDescription(), tower.getUpgradePrize()), textXPos, top + height - TEXT_PADDING - DIALOG_ITEM_PADDING, textPaint);
 		} else {
 			borderPaint.setColor(Color.GRAY);
 			textPaint.setColor(Color.GRAY);
@@ -53,10 +55,10 @@ public class TowerOptionsUpgradeDialogItem extends TowerOptionsDialogItem {
 	}
 
 	@Override
-	public void performAction(Tower tower, GameProperties gameProperties) {
+	public void performAction(GameProperties gameProperties) {
 		if (!upgrade.isAvailable()) {
 			userMessageHandler.addNotification(new Notification(GameApplication.getAppContext().getString(R.string.max_upgrade_level), gameProperties));
-		}else if (!gameProperties.removeGems(upgrade.getUpgradePrize())) {
+		}else if (!gameProperties.removeGems(tower.getUpgradePrize())) {
 			userMessageHandler.addNotification(new Notification(GameApplication.getAppContext().getString(R.string.no_gems), gameProperties));
 		} else {
 			upgrade.increaseUpgradeLevel();

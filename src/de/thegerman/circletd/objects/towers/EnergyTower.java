@@ -49,4 +49,9 @@ public class EnergyTower extends Tower {
 		return 25 * energyTowers;
 	}
 
+	@Override
+	public int getUpgradeBaseCosts() {
+		return 50;
+	}
+
 }

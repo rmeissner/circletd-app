@@ -45,4 +45,9 @@ public class MainBase extends ProviderTower {
 		return Integer.MAX_VALUE;
 	}
 
+	@Override
+	public int getUpgradeBaseCosts() {
+		return 0;
+	}
+
 }

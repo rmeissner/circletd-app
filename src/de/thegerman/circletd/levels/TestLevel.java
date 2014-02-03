@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.text.TextPaint;
 import de.thegerman.circletd.GameProperties;
 import de.thegerman.circletd.objects.creeps.AttackerCreep;
 import de.thegerman.circletd.objects.creeps.BasicCreep;

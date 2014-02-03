@@ -10,14 +10,14 @@ import de.thegerman.circletd.R;
 public abstract class Upgrade<T> {
 	private String basename;
 	private int level;
-	private List<UpgradeLevel<T>> levels = new ArrayList<UpgradeLevel<T>>();
+	private List<T> levels = new ArrayList<T>();
 
 	public Upgrade(String basename) {
 		this.basename = basename;
 	}
 
-	protected void addUpgradeLevel(UpgradeLevel<T> upgradeLevel) {
-		levels.add(upgradeLevel);
+	protected void addUpgradeLevel(T value) {
+		levels.add(value);
 	}
 
 	public String getNameWithLevel() {
@@ -31,15 +31,11 @@ public abstract class Upgrade<T> {
 	}
 
 	public T getCurrentValue() {
-		return levels.get(level).getValue();
+		return levels.get(level);
 	}
 	
 	public T getNextValue() {
-		return isAvailable() ? levels.get(level + 1).getValue() : getCurrentValue();
-	}
-
-	public int getUpgradePrize() {
-		return isAvailable() ? levels.get(level + 1).getPrice() : -1;
+		return isAvailable() ? levels.get(level + 1) : getCurrentValue();
 	}
 
 	public void increaseUpgradeLevel() {
@@ -53,4 +49,8 @@ public abstract class Upgrade<T> {
 	}
 
 	public abstract String getDescription();
+
+	public int getCurrentLevel() {
+		return level;
+	}
 }

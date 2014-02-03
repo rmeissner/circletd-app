@@ -3,7 +3,6 @@ package de.thegerman.circletd.dialogs;
 import de.thegerman.circletd.GameApplication;
 import de.thegerman.circletd.GameProperties;
 import de.thegerman.circletd.R;
-import de.thegerman.circletd.objects.towers.Tower;
 
 
 public class TowerOptionsCancelDialogItem extends TowerOptionsDialogItem {
@@ -13,7 +12,7 @@ public class TowerOptionsCancelDialogItem extends TowerOptionsDialogItem {
 	}
 
 	@Override
-	public void performAction(Tower tower, GameProperties gameProperties) {
+	public void performAction(GameProperties gameProperties) {
 		// no action to perform
 	}
 }
