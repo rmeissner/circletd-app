@@ -1,8 +1,8 @@
 package de.thegerman.circletd.objects.towers;
 
+import android.graphics.Color;
 import de.thegerman.circletd.GameProperties;
 import de.thegerman.circletd.objects.creeps.Creep;
-import android.graphics.Color;
 
 public class MainBase extends ProviderTower {
 	
@@ -41,7 +41,7 @@ public class MainBase extends ProviderTower {
 	}
 
 	@Override
-	public int getCosts() {
+	public int getCosts(GameProperties gameProperties) {
 		return Integer.MAX_VALUE;
 	}
 

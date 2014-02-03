@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
+import de.thegerman.circletd.GameProperties;
 import de.thegerman.circletd.objects.GraphicalObject;
 import de.thegerman.circletd.objects.towers.Tower;
 
@@ -12,8 +13,8 @@ public abstract class TowerOptionsDialogItem implements GraphicalObject{
 	
 	public static final int TOWER_GRAFIK_BOX_SIZE = 100; 
 	public static final int DIALOG_ITEM_PADDING = 10;
-	public static final int TEXT_PADDING = 20;
-	public static final int TEXT_SIZE = 75;
+	public static final int TEXT_PADDING = 30;
+	public static final int TEXT_SIZE = 50;
 	public static final float HEIGHT = TOWER_GRAFIK_BOX_SIZE + DIALOG_ITEM_PADDING * 2;
 	public static final float TEXT_LEFT_MARGIN = DIALOG_ITEM_PADDING + TOWER_GRAFIK_BOX_SIZE;
 	
@@ -36,7 +37,7 @@ public abstract class TowerOptionsDialogItem implements GraphicalObject{
 		this.borderPaint.setStyle(Style.STROKE);
 		this.textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		this.textPaint.setColor(Color.WHITE);
-		this.textPaint.setStyle(Style.STROKE);
+		this.textPaint.setStyle(Style.FILL_AND_STROKE);
 		this.textPaint.setTextSize(TEXT_SIZE);
 		this.textPaint.setTextAlign(Align.CENTER);
 	}
@@ -61,5 +62,5 @@ public abstract class TowerOptionsDialogItem implements GraphicalObject{
 		this.top = top;
 	}
 	
-	public abstract void performAction(Tower tower);
+	public abstract void performAction(Tower tower, GameProperties gameProperties);
 }

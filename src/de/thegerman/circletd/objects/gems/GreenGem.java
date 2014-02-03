@@ -1,4 +1,4 @@
-package de.thegerman.circletd.gems;
+package de.thegerman.circletd.objects.gems;
 
 import android.graphics.Color;
 import de.thegerman.circletd.GameProperties;
@@ -6,7 +6,7 @@ import de.thegerman.circletd.GameProperties;
 public class GreenGem extends Gem {
 
 	public GreenGem(float xPos, float yPos) {
-		super(xPos, yPos, 50, Color.GREEN);
+		super(xPos, yPos, Color.GREEN);
 	}
 
 	@Override

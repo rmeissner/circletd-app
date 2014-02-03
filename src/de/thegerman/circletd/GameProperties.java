@@ -3,8 +3,8 @@ package de.thegerman.circletd;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import de.thegerman.circletd.gems.Gem;
 import de.thegerman.circletd.objects.creeps.Creep;
+import de.thegerman.circletd.objects.gems.Gem;
 import de.thegerman.circletd.objects.projectiles.Projectile;
 import de.thegerman.circletd.objects.towers.Tower;
 

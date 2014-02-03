@@ -1,11 +1,15 @@
 package de.thegerman.circletd.objects.towers;
 
+import java.util.List;
+
 import android.graphics.Color;
 import de.thegerman.circletd.GameProperties;
-import de.thegerman.circletd.objects.creeps.Creep;
-import de.thegerman.circletd.objects.projectiles.FollowingProjectile;
+import de.thegerman.circletd.upgrades.EnergyTowerEnergyUpgrade;
+import de.thegerman.circletd.upgrades.Upgrade;
 
 public class EnergyTower extends Tower {
+	
+	EnergyTowerEnergyUpgrade energyUpgrade = new EnergyTowerEnergyUpgrade();
 
 	public EnergyTower(float x, float y, ProviderTower providerTower) {
 		super(x, y, 30, providerTower);
@@ -24,12 +28,25 @@ public class EnergyTower extends Tower {
 
 	@Override
 	public int getEnergyLevel() {
-		return 1;
+		return energyUpgrade.getCurrentValue();
+	}
+	
+	@Override
+	public List<Upgrade<?>> getUpgrades() {
+		List<Upgrade<?>> upgrades = super.getUpgrades();
+		upgrades.add(energyUpgrade);
+		return upgrades;
 	}
 
 	@Override
-	public int getCosts() {
-		return 25;
+	public int getCosts(GameProperties gameProperties) {
+		int energyTowers = 1;
+		for (Tower tower : gameProperties.getTowers()) {
+			if (tower.getType() == Tower.TowerType.EnergyTower) {
+				energyTowers++;
+			}
+		}
+		return 25 * energyTowers;
 	}
 
 }

@@ -8,17 +8,25 @@ import android.graphics.Paint;
 import de.thegerman.circletd.GameProperties;
 import de.thegerman.circletd.objects.creeps.Creep;
 import de.thegerman.circletd.objects.towers.Tower;
+import de.thegerman.circletd.upgrades.ShootingTowerDamageUpgrade;
 
 public class FollowingProjectile extends Projectile {
 	
 	private WeakReference<Creep> targetReference;
 	private Paint paint;
+	private ShootingTowerDamageUpgrade upgrade;
 
-	public FollowingProjectile(Tower origin, Creep target) {
+	public FollowingProjectile(Tower origin, Creep target, ShootingTowerDamageUpgrade upgrade) {
 		super(origin.getX(), origin.getY(), 10, origin);
 		this.targetReference = new WeakReference<Creep>(target);
+		this.upgrade = upgrade;
 		this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		this.paint.setColor(Color.MAGENTA);
+	}
+	
+	@Override
+	public int getDamage() {
+		return upgrade.getCurrentValue();
 	}
 
 	@Override
@@ -44,7 +52,6 @@ public class FollowingProjectile extends Projectile {
 	
 	@Override
 	public void destroy() {
-		targetReference = null;
 		super.destroy();
 	}
 

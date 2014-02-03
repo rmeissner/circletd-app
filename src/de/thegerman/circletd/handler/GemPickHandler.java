@@ -2,7 +2,7 @@ package de.thegerman.circletd.handler;
 
 import android.view.MotionEvent;
 import de.thegerman.circletd.GameProperties;
-import de.thegerman.circletd.gems.Gem;
+import de.thegerman.circletd.objects.gems.Gem;
 
 public class GemPickHandler implements TouchEventHandler {
 	

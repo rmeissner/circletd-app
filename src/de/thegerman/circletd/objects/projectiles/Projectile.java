@@ -24,6 +24,10 @@ public abstract class Projectile extends CircleObject {
 	public Tower getOrigin() {
 		return towerReference.get();
 	}
+	
+	public int getDamage() {
+		return 1;
+	}
 
 	public boolean hitAction(Creep creep, GameProperties gameProperties) {
 		return true;
@@ -41,7 +45,6 @@ public abstract class Projectile extends CircleObject {
 	}
 
 	public void destroy() {
-		towerReference = null;
 		alive = false;
 	}
 	

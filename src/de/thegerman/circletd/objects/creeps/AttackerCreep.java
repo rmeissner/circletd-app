@@ -7,19 +7,21 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import de.thegerman.circletd.GameProperties;
 import de.thegerman.circletd.objects.gems.Gem;
-import de.thegerman.circletd.objects.gems.GreenGem;
+import de.thegerman.circletd.objects.gems.MagentaGem;
+import de.thegerman.circletd.objects.projectiles.Projectile;
 import de.thegerman.circletd.objects.towers.Tower;
 
-public class BasicCreep extends Creep {
+public class AttackerCreep extends Creep {
 
 	private WeakReference<Tower> targetReference;
+	private WeakReference<Tower> attackerReference;
 	private Paint paint;
 
-	public BasicCreep(float x, float y, Tower target) {
-		super(x, y, 20, 2);
+	public AttackerCreep(float x, float y, Tower target) {
+		super(x, y, 20, 4);
 		this.targetReference = new WeakReference<Tower>(target);
 		this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		this.paint.setColor(Color.YELLOW);
+		this.paint.setColor(Color.MAGENTA);
 	}
 
 	@Override
@@ -30,7 +32,14 @@ public class BasicCreep extends Creep {
 	@Override
 	public boolean update(long timespan, GameProperties gameProperties) {
 		if (targetReference != null) {
-  		Tower target = targetReference.get();
+			Tower target = null;
+			if (attackerReference != null) {
+				target = attackerReference.get();
+			}
+			if (target == null || !target.isAlive()) {
+				attackerReference = null;
+				target = targetReference.get();
+			}
   		if (target != null && target.isAlive()) {
     		float xd = target.getX() - x;
     		float yd = target.getY() - y;
@@ -42,6 +51,17 @@ public class BasicCreep extends Creep {
 		}
 		return super.update(timespan, gameProperties);
 	}
+	
+	@Override
+	public boolean hitAction(Projectile projectile, GameProperties gameProperties) {
+		if (attackerReference == null || attackerReference.get() == null) {
+			Tower newTarget = projectile.getOrigin();
+			if (newTarget != null) {
+				attackerReference = new WeakReference<Tower>(newTarget);
+			}
+		}
+		return super.hitAction(projectile, gameProperties);
+	}
 
 	@Override
 	public float getSpeed() {
@@ -50,7 +70,7 @@ public class BasicCreep extends Creep {
 
 	@Override
 	public Gem getDroppedGem() {
-		return new GreenGem(getX(), getY());
+		return new MagentaGem(getX(), getY());
 	}
 
 }

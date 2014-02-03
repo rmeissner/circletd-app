@@ -1,8 +1,8 @@
 package de.thegerman.circletd.objects.creeps;
 
 import de.thegerman.circletd.GameProperties;
-import de.thegerman.circletd.gems.Gem;
 import de.thegerman.circletd.objects.CircleObject;
+import de.thegerman.circletd.objects.gems.Gem;
 import de.thegerman.circletd.objects.projectiles.Projectile;
 import de.thegerman.circletd.objects.towers.Tower;
 
@@ -11,9 +11,11 @@ public abstract class Creep extends CircleObject {
 	protected boolean alive = true;
 	protected float xspeed = 0;
 	protected float yspeed = 1;
+	private int lives;
 
-	public Creep(float x, float y, float radius) {
+	public Creep(float x, float y, float radius, int lives) {
 		super(x, y, radius);
+		this.lives = lives;
 	}
 
 	public abstract float getSpeed();
@@ -31,11 +33,11 @@ public abstract class Creep extends CircleObject {
 	}
 
 	public boolean hitAction(Projectile projectile, GameProperties gameProperties) {
-		return true;
+		return looseLives(projectile.getDamage());
 	}
-	
+
 	public boolean hitAction(Tower tower, GameProperties gameProperties) {
-		return true;
+		return looseLives(1);
 	}
 
 	public void destroy() {
@@ -44,6 +46,11 @@ public abstract class Creep extends CircleObject {
 	
 	public boolean isAlive() {
 		return alive;
+	}
+
+	protected boolean looseLives(int damage) {
+		lives -= damage;
+		return lives <= 0;
 	}
 	
 

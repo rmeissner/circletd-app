@@ -13,6 +13,7 @@ public class TowerOptionsHandler implements TouchEventHandler {
 	private float eventStartY;
 	private boolean eventMoved;
 	private UserMessageHandler dialogHandler;
+	private long eventTime;
 	
 	public TowerOptionsHandler(UserMessageHandler dialogHandler) {
 		this.dialogHandler = dialogHandler;
@@ -24,8 +25,11 @@ public class TowerOptionsHandler implements TouchEventHandler {
 		case MotionEvent.ACTION_POINTER_UP:
 		case MotionEvent.ACTION_UP: {
 			if (selectedTower != null && !eventMoved) {
-				gameProperties.pauseGame();
-				dialogHandler.openDialog(new TowerOptionsDialog(selectedTower, gameProperties, dialogHandler));
+				if (System.currentTimeMillis() - eventTime < 1000) {
+  				gameProperties.pauseGame();
+  				dialogHandler.openDialog(new TowerOptionsDialog(selectedTower, gameProperties, dialogHandler));
+				}
+				selectedTower.deactivateAdditionalDraw();
 			}
 			selectedTower = null;
 			break;
@@ -36,8 +40,10 @@ public class TowerOptionsHandler implements TouchEventHandler {
 				if (tower.contains(currentX, currentY) && !(tower instanceof MainBase)) {
 					eventStartX = currentX;
 					eventStartY = currentY;
+					eventTime = System.currentTimeMillis();
 					eventMoved = false;
 					selectedTower = tower;
+					tower.activateAdditionalDraw();
 				}
 			}
 			break;
@@ -47,6 +53,7 @@ public class TowerOptionsHandler implements TouchEventHandler {
 				float xDist = eventStartX - currentX;
 				float yDist = eventStartY - currentY;
 				eventMoved = Math.sqrt(xDist * xDist + yDist * yDist) > 50;
+				if (eventMoved) selectedTower.deactivateAdditionalDraw();
 			}
 			break;
 		}

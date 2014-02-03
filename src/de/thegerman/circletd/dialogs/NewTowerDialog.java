@@ -83,7 +83,7 @@ public class NewTowerDialog extends GameDialog {
 		if (newTower != null) {
 			if ((gameProperties.getEnergy() + newTower.getEnergyLevel()) < 0) {
 				userMessageHandler.addNotification(new Notification(GameApplication.getAppContext().getString(R.string.no_energy), gameProperties));
-			} else if (!gameProperties.removeGems(newTower.getCosts())) {
+			} else if (!gameProperties.removeGems(newTower.getCosts(gameProperties))) {
 				userMessageHandler.addNotification(new Notification(GameApplication.getAppContext().getString(R.string.no_gems), gameProperties));
 			}	else {
     		gameProperties.getTowers().add(newTower);

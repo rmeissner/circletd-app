@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import de.thegerman.circletd.GameProperties;
 import de.thegerman.circletd.handler.UserMessageHandler;
 import de.thegerman.circletd.objects.towers.Tower;
+import de.thegerman.circletd.upgrades.Upgrade;
 
 public class TowerOptionsDialog extends GameDialog {
 	
@@ -28,9 +29,20 @@ public class TowerOptionsDialog extends GameDialog {
 		this.paint.setColor(Color.DKGRAY);
 		this.paint.setAlpha(200);
 		
-		float itemGroupHeight = 2 * (NewTowerDialogItem.HEIGHT + DIALOG_PADDING/2) - DIALOG_PADDING/2;
+		List<Upgrade<?>> towerUpgrades = selectedTower.getUpgrades();
+		
+		float itemGroupHeight = (2 + towerUpgrades.size()) * (NewTowerDialogItem.HEIGHT + DIALOG_PADDING/2) - DIALOG_PADDING/2;
 		
 		float itemTopPos = (gameProperties.getHeight() - itemGroupHeight) / 2;
+		
+		for (Upgrade<?> towerUpgrade : towerUpgrades) {
+			items.add(new TowerOptionsUpgradeDialogItem(gameProperties.getWidth() - DIALOG_PADDING*2, 
+					NewTowerDialogItem.HEIGHT, DIALOG_PADDING, 
+					itemTopPos, towerUpgrade, userMessageHandler));
+			
+			itemTopPos += NewTowerDialogItem.HEIGHT + DIALOG_PADDING/2;
+		}
+		
 		items.add(new TowerOptionsDestroyDialogItem(gameProperties.getWidth() - DIALOG_PADDING*2, 
 				NewTowerDialogItem.HEIGHT, DIALOG_PADDING, 
 				itemTopPos));
@@ -53,7 +65,7 @@ public class TowerOptionsDialog extends GameDialog {
 
 		for (TowerOptionsDialogItem item : items) {
 			if (item.contains(currentX, currentY)) {
-				item.performAction(selectedTower);
+				item.performAction(selectedTower, gameProperties);
 				continueGame();
 				break;
 			}

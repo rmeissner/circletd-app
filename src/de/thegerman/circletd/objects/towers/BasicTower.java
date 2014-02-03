@@ -26,7 +26,7 @@ public class BasicTower extends Tower {
 	}
 
 	@Override
-	public int getCosts() {
+	public int getCosts(GameProperties gameProperties) {
 		return 0;
 	}
 }

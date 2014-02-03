@@ -6,21 +6,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import de.thegerman.circletd.GameProperties;
-import de.thegerman.circletd.gems.Gem;
-import de.thegerman.circletd.gems.GreenGem;
-import de.thegerman.circletd.objects.projectiles.Projectile;
+import de.thegerman.circletd.objects.gems.BlueGem;
+import de.thegerman.circletd.objects.gems.Gem;
 import de.thegerman.circletd.objects.towers.Tower;
 
 public class TankCreep extends Creep {
 
 	private WeakReference<Tower> targetReference;
-	private int lives;
 	private Paint paint;
 
 	public TankCreep(float x, float y, Tower target) {
-		super(x, y, 20);
+		super(x, y, 20, 8);
 		this.targetReference = new WeakReference<Tower>(target);
-		this.lives = 5;
 		this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		this.paint.setColor(Color.CYAN);
 	}
@@ -46,27 +43,6 @@ public class TankCreep extends Creep {
 		return super.update(timespan, gameProperties);
 	}
 	
-	private boolean looseLive() {
-		lives--;
-		return lives <= 0;
-	}
-	
-	@Override
-	public boolean hitAction(Projectile projectile, GameProperties gameProperties) {
-		return looseLive();
-	}
-
-	@Override
-	public boolean hitAction(Tower tower, GameProperties gameProperties) {
-		return looseLive();
-	}
-	
-	@Override
-	public void destroy() {
-		targetReference = null;
-		super.destroy();
-	}
-
 	@Override
 	public float getSpeed() {
 		return 100;
@@ -74,7 +50,7 @@ public class TankCreep extends Creep {
 
 	@Override
 	public Gem getDroppedGem() {
-		return new GreenGem(getX(), getY());
+		return new BlueGem(getX(), getY());
 	}
 
 }

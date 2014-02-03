@@ -1,5 +1,6 @@
 package de.thegerman.circletd.objects.towers;
 
+import de.thegerman.circletd.GameProperties;
 import android.graphics.Color;
 
 public class ExtensionTower extends ProviderTower {
@@ -25,7 +26,7 @@ public class ExtensionTower extends ProviderTower {
 	}
 
 	@Override
-	public int getCosts() {
+	public int getCosts(GameProperties gameProperties) {
 		return 50;
 	}
 

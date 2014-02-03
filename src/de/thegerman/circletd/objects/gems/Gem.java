@@ -1,4 +1,4 @@
-package de.thegerman.circletd.gems;
+package de.thegerman.circletd.objects.gems;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -14,8 +14,8 @@ public abstract class Gem extends CircleObject {
 
 	private boolean alive = true;
 	
-	public Gem(float xPos, float yPos, float radius, int gemColor) {
-		super(xPos, yPos, radius);
+	public Gem(float xPos, float yPos, int gemColor) {
+		super(xPos, yPos, 75);
 		this.gemColor = gemColor;
 		this.angle = 0;
 	}

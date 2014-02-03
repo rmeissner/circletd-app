@@ -2,16 +2,31 @@
 <resources>
 
     <string name="app_name">Circle TD</string>
-    <string name="cancel">Cancel</string>
-    <string name="destroy">Destroy</string>
     <string name="basic_tower">Basic Tower</string>
-    <string name="main_base">Main Base</string>
-    <string name="extension_tower">Extension Tower</string>
-    <string name="shooter_tower">Basic Shooter</string>
+    <string name="cancel">Cancel</string>
+    <string name="damage_upgrade">Damage Upgrade</string>
+    <string name="damage_with_number">%d Damage</string>
+    <string name="destroy">Destroy</string>
+    <string name="draw_more_info">Draw More Info</string>
     <string name="energy_tower">Energy Tower</string>
+    <string name="energy_upgrade">Energy Upgrade</string>
+    <string name="energy_with_number">%d Energy</string>
+    <string name="extension_tower">Extension Tower</string>
+    <string name="upgrade_for_gems">%1$s for %2$d Gems</string>
+    <string name="hide_more_info">Hide More Info</string>
+    <string name="hits_per_second">Hits/s</string>
+    <string name="hits_per_second_with_number">%.2f Hits/s</string>
+    <string name="level">Level</string>
+    <string name="main_base">Main Base</string>
+    <string name="max_upgrade_level">The upgrade is on max level!</string>
+    <string name="no_children_space">No more connections available!</string>
     <string name="no_energy">Not enough Energy!</string>
     <string name="no_gems">Not enough Gems!</string>
-    <string name="no_children_space">No more connections available!</string>
     <string name="no_space">There is already a tower!</string>
+    <string name="range">Range</string>
+    <string name="range_with_number">%.0f Range</string>
+    <string name="range_upgrade">Range Upgrade</string>
+    <string name="shooter_tower">Basic Shooter</string>
+    <string name="speed_upgrade">Speed Upgrade</string>
 
 </resources>

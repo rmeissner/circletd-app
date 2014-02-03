@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import de.thegerman.circletd.GameProperties;
-import de.thegerman.circletd.gems.Gem;
+import de.thegerman.circletd.objects.gems.Gem;
 
 public class GemsUIElement extends UIElement {
 	
